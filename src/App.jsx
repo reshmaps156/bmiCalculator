@@ -1,7 +1,5 @@
 import './App.css'
 import Button from '@mui/material/Button';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMars, faVenus } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import TextField from '@mui/material/TextField';
 
@@ -10,11 +8,11 @@ import TextField from '@mui/material/TextField';
 
 
 function App() {
-  const [weight, setWeight] = useState()
-  const [height, setHeight] = useState()
-  const [age, setAge] = useState()
-  const [bmi, setBmi] = useState()
-  const [msg,setMsg] = useState()
+  const [weight, setWeight] = useState('')
+  const [height, setHeight] = useState('')
+  const [age, setAge] = useState('')
+  const [bmi, setBmi] = useState(null)
+  const [msg,setMsg] = useState('')
 
   const [isWeight ,setIsWeight] =useState(true)
   const [isHeight ,setIsHeight] =useState(true)
@@ -27,7 +25,7 @@ function App() {
     let value = e.target.value
     // console.log(name, value);
 
-    if (!!value.match(/^[0-9]*$/)) {
+    if (!!value.match(/^[0-9]*$/) ) {
       if (name == "height") {
         setHeight(value)
         setIsHeight(true)
@@ -53,30 +51,39 @@ function App() {
       } else {
         setAge(value)
         setIsAge(false)
-      }
+        }
     }
 
   }
 
   const calculate = () => {
     
-    setBmi(((weight / (height * height)) * 10000).toFixed())
+    let bmivalue = ((weight / (height * height)) * 10000).toFixed()
+    setBmi(bmivalue)
     
-    if(bmi<18.5){
-      
-      setMsg('You are Underweight')
+    const determineMessage =(bmivalue)=>{
+      let bmiMsg = ''
+      if(bmivalue<18.5){
+        
+        bmiMsg = 'You are Underweight'
+        
+  
+      }else if(bmivalue >=18.5 && bmivalue<=24.9){
+        bmiMsg = 'You are Normal'
+        
+      }
+      else if(bmivalue >=25 && bmivalue<=29.9){
+        bmiMsg = 'You are Overweight'
+        
+      }else{
+        bmiMsg = 'Obesity'
+        
+      }
+      setMsg(bmiMsg)
+    }
+    determineMessage(bmivalue)
 
-    }else if(bmi >=18.5 && bmi<=24.9){
-      setMsg('You are Normal')
-      
-    }
-    else if(bmi >=25 && bmi<=29.9){
-      setMsg('You are Overweight')
-      
-    }else{
-      setMsg('Obesity')
-      
-    }
+   
 
   }
   const handleReset = () => {
@@ -93,7 +100,7 @@ function App() {
   return (
     <>
       <div className='main'>
-        <div className='border calcContainer rounded'>
+        <div className='border calcContainer rounded '>
           <h2 className='text-center mt-3'>BMI Calculator</h2>
           <div className='result p-4 text-center'>
             <p className='message'> {bmi}</p>
