@@ -75,10 +75,17 @@ function App() {
       else if(bmivalue >=25 && bmivalue<=29.9){
         bmiMsg = 'You are Overweight'
         
-      }else{
+  
+        
+      }else if(bmivalue>=30 && bmivalue<=500){
         bmiMsg = 'Obesity'
         
+      }else{
+        setBmi(null)
+        bmiMsg=''
+        alert('invalid input')
       }
+      
       setMsg(bmiMsg)
     }
     determineMessage(bmivalue)
